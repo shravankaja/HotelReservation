@@ -14,6 +14,7 @@ public class Hotel {
     Map<String, Integer> costOfHotels = new HashMap<>();
     HashMap<String, String> monthsInYear = new HashMap<String, String>();
     Scanner sc = new Scanner(System.in);
+    Map<String, Integer> ratingOfHotels = new HashMap<>();
 
     public Hotel(String name, int weekDayRate, int weekEndRate, int rating) {
         this.name = name;
@@ -38,6 +39,7 @@ public class Hotel {
 
     // method to find cheap hotel for given date range
     public int findCheapestHotel(String dateCheckIn, String dateCheckOut) {
+        ratingOfHotels = arrayOfHotels.stream().collect(Collectors.toMap(e -> e.getHotelName(), e -> e.getRating()));
         String dayStart = dateCheckIn.substring(0, 2);
         int checkInDay = Integer.parseInt(dayStart);
         String dayEnd = dateCheckOut.substring(0, 2);
@@ -48,8 +50,12 @@ public class Hotel {
         int finalNumberOfDays = numberOfDays;
         costOfHotels = arrayOfHotels.stream().collect(Collectors.toMap(e -> e.getHotelName(), e -> e.getWeekDayRate() * finalNumberOfDays + e.getWeekEndRate() * numberOfWeekEnds));
         int cost = Collections.min(costOfHotels.values());
-        costOfHotels.entrySet().stream().filter(e -> e.getValue().equals(cost)).forEach(e -> System.out.println(e.getKey()));
+        String hotel = costOfHotels.entrySet().stream().filter(e -> e.getValue().equals(cost)).map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+        System.out.println("Hotel : " + hotel);
         System.out.println("Stay Price :" + cost);
+        System.out.println("Rating  : " + ratingOfHotels.get(hotel));
         return cost;
     }
 
@@ -89,7 +95,7 @@ public class Hotel {
                 weekEndCount++;
             }
         }
-
         return weekEndCount;
     }
 }
+
