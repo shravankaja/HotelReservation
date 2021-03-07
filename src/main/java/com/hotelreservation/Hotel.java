@@ -9,15 +9,17 @@ public class Hotel {
     public String name;
     public int weekDayRate;
     public int weekEndRate;
+    public int rating;
     ArrayList<Hotel> arrayOfHotels = new ArrayList<>();
     Map<String, Integer> costOfHotels = new HashMap<>();
     HashMap<String, String> monthsInYear = new HashMap<String, String>();
     Scanner sc = new Scanner(System.in);
 
-    public Hotel(String name, int weekDayRate, int weekEndRate) {
+    public Hotel(String name, int weekDayRate, int weekEndRate, int rating) {
         this.name = name;
         this.weekDayRate = weekDayRate;
         this.weekEndRate = weekEndRate;
+        this.rating = rating;
     }
 
     public Hotel() {
@@ -28,6 +30,10 @@ public class Hotel {
     public boolean addHotel(Hotel hotel) {
         arrayOfHotels.add(hotel);
         return true;
+    }
+
+    public int getRating() {
+        return rating;
     }
 
     // method to find cheap hotel for given date range
