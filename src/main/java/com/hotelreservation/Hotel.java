@@ -1,31 +1,34 @@
 package com.hotelreservation;
 
-public class Hotel {
-    public String hotelName;
-    public int rating;
-    public int weekDayRates;
-    public int weekEndRates;
+import java.util.*;
 
-    public Hotel(String hotelName, int rating, int weekDayRates, int weekEndRates) {
-        this.hotelName = hotelName;
-        this.rating = rating;
-        this.weekDayRates = weekDayRates;
-        this.weekEndRates = weekEndRates;
+public class Hotel {
+    public String name;
+    public int rate;
+    ArrayList<Hotel> arrayofHotel = new ArrayList<>();
+    Scanner sc = new Scanner(System.in);
+
+    public Hotel(String name, int rate) {
+        this.name = name;
+        this.rate = rate;
+
+    }
+
+    public Hotel() {
+
+    }
+
+    // method to add hotel
+    public boolean addHotel(Hotel hotel) {
+        arrayofHotel.add(hotel);
+        return true;
     }
 
     public String getHotelName() {
-        return hotelName;
+        return name;
     }
 
     public int getRating() {
-        return rating;
-    }
-
-    public int getWeekDayRates() {
-        return weekDayRates;
-    }
-
-    public int getWeekEndRates() {
-        return weekEndRates;
+        return rate;
     }
 }
