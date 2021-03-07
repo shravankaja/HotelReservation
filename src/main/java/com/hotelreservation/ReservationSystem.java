@@ -15,5 +15,6 @@ public class ReservationSystem {
         hotel.addHotel(bridgeWood);
         hotel.addHotel(ridgeWood);
         hotel.findCheapestHotel("11Sep2020", "12 Sep2020");
+        hotel.findBestRatedHotel("11Sep2020", "12 Sep2020");
     }
 }
