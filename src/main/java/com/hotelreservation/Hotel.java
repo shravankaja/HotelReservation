@@ -99,7 +99,7 @@ public class Hotel {
         return monthsInYear.get(month);
     }
 
-    // To calclate Number of WeekDays in the given date range
+    // To calculate Number of WeekDays in the given date range
     public int noOfWeekDaysAndWeekEnds(String dateCheckIn, String dateCheckOut, int numOfDays, int checkIn, int checkOut) {
         int weekEndCount = 0;
         String month = dateCheckIn.substring(2, 5);
@@ -119,20 +119,26 @@ public class Hotel {
     //Method to find best rated hotel
     public int findBestRatedHotel(String dateCheckIn, String dateCheckout, String customerType) {
         findCheapestHotel(dateCheckIn, dateCheckout, customerType);
+        Map<String, Integer> map;
         ratingOfHotels = arrayOfHotels.stream().collect(Collectors.toMap(e -> e.getHotelName(), e -> e.getRating()));
-        if ((costOfHotels.get("LakeWood") < costOfHotels.get("BridgeWood") &&
-                ratingOfHotels.get("LakeWood") > ratingOfHotels.get("BridgeWood")) && (costOfHotels.get("LakeWood")
-                < costOfHotels.get("RidgeWood") &&
-                ratingOfHotels.get("LakeWood") > ratingOfHotels.get("RidgeWood"))) {
-            return costOfHotels.get("LakeWood");
-        }
-        if ((costOfHotels.get("BridgeWood") < costOfHotels.get("LakeWood") &&
-                ratingOfHotels.get("BridgeWood") > ratingOfHotels.get("LakeWood")) &&
-                (costOfHotels.get("BridgeWood") < costOfHotels.get("RidgeWood") &&
-                        ratingOfHotels.get("BridgeWood") > ratingOfHotels.get("RidgeWood"))) {
-            return costOfHotels.get("BridgeWood");
+        if (customerType.equals("Reward")) {
+            map = costOfHotelsRewardForCustomer;
         } else {
-            return costOfHotels.get("RidgeWood");
+            map = costOfHotels;
+        }
+        if ((map.get("LakeWood") < map.get("BridgeWood") &&
+                ratingOfHotels.get("LakeWood") > ratingOfHotels.get("BridgeWood")) && (map.get("LakeWood")
+                < map.get("RidgeWood") &&
+                ratingOfHotels.get("LakeWood") > ratingOfHotels.get("RidgeWood"))) {
+            return map.get("LakeWood");
+        }
+        if ((map.get("BridgeWood") < map.get("LakeWood") &&
+                ratingOfHotels.get("BridgeWood") > ratingOfHotels.get("LakeWood")) &&
+                (map.get("BridgeWood") < map.get("RidgeWood") &&
+                        ratingOfHotels.get("BridgeWood") > ratingOfHotels.get("RidgeWood"))) {
+            return map.get("BridgeWood");
+        } else {
+            return map.get("RidgeWood");
         }
     }
 
@@ -162,6 +168,12 @@ public class Hotel {
             System.out.println(e);
         }
         return costReturn;
+    }
+
+    // Method to find best rated hotel for reward customers
+    public int findBestRatedAndCheapestHotelRewardCustomer(String dateCheckIn, String dateCheckOut, String customerType) {
+        int cost = findBestRatedHotel(dateCheckIn, dateCheckOut, customerType);
+        return cost;
     }
 }
 
