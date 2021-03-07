@@ -152,28 +152,52 @@ public class Hotel {
 
     // Method to find Cheapest Hotel for Reward Customers
     public int findCheapestHotelRewardCustomer(String dateCheckIn, String dateCheckOut, String customerType) {
-        int costReturn = 0;
-        try {
-            if (customerType.equals("Reward")) {
-                findCheapestHotel(dateCheckIn, dateCheckOut, customerType);
-                int cost = Collections.min(costOfHotelsRewardForCustomer.values());
-                String hotel = costOfHotelsRewardForCustomer.entrySet().stream().filter(e -> e.getValue().equals(cost)).map(Map.Entry::getKey)
-                        .findFirst()
-                        .orElse(null);
-                costReturn = cost;
-            } else {
-                System.out.println("Please enter Reward as customer type");
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+        if (customerType.equals("Reward")) {
+            findCheapestHotel(dateCheckIn, dateCheckOut, customerType);
+            int cost = Collections.min(costOfHotelsRewardForCustomer.values());
+            int costSteam = cost;
+            String hotel = costOfHotelsRewardForCustomer.entrySet().stream().filter(e -> e.getValue().equals(costSteam)).map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse(null);
+            return cost;
+        } else {
+            System.out.println("Please enter Reward as customer type");
+            return 0;
         }
-        return costReturn;
     }
 
     // Method to find best rated hotel for reward customers
     public int findBestRatedAndCheapestHotelRewardCustomer(String dateCheckIn, String dateCheckOut, String customerType) {
-        int cost = findBestRatedHotel(dateCheckIn, dateCheckOut, customerType);
+        int cost = findBestAndCheapestHotelRegular(dateCheckIn, dateCheckOut, customerType);
         return cost;
     }
+
+    public int findBestAndCheapestHotelRegular(String dateCheckIn, String dateCheckOut, String customerType) {
+        findCheapestHotel(dateCheckIn, dateCheckOut, customerType);
+        Map<String, Integer> map;
+        if (customerType.equals("Reward")) {
+            map = costOfHotelsRewardForCustomer;
+        } else {
+            map = costOfHotels;
+        }
+        int sumCost = map.values().stream().reduce(0, Integer::sum);
+        long count = map.values().stream().count();
+        long averageCost = sumCost / count;
+        List<String> listOfHotels = map.entrySet().stream().filter(e -> e
+                .getValue() < averageCost).map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        Map<String, Integer> ratingOfHotelPrice = new HashMap<>();
+        System.out.println(listOfHotels);
+        for (String name : listOfHotels) {
+            ratingOfHotelPrice.put(name, ratingOfHotels.get(name));
+        }
+        int rating = Collections.max(ratingOfHotelPrice.values());
+        String name = ratingOfHotelPrice.entrySet().stream().filter(e -> e.getValue().equals(rating)).map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+        System.out.println("Hotel : " + name + " Cost :" + map.get(name) + " Rating is :" + ratingOfHotels.get(name));
+        return map.get(name);
+    }
+
 }
 
