@@ -21,7 +21,7 @@ public class HotelTest {
         hotel.addHotel(lakeWood);
         hotel.addHotel(bridgeWood);
         hotel.addHotel(ridgeWood);
-        Assertions.assertEquals(270, hotel.findCheapestHotel("12Sep2020", "15Sep2020"));
+        Assertions.assertEquals(270, hotel.findCheapestHotel("12Sep2020", "15Sep2020", "Regular"));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class HotelTest {
         hotel.addHotel(lakeWood);
         hotel.addHotel(bridgeWood);
         hotel.addHotel(ridgeWood);
-        Assertions.assertEquals(60, hotel.findCheapestHotel("11Sep2020", "12Sep2020"));
+        Assertions.assertEquals(60, hotel.findCheapestHotel("11Sep2020", "12Sep2020", "Regular"));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class HotelTest {
         hotel.addHotel(lakeWood);
         hotel.addHotel(bridgeWood);
         hotel.addHotel(ridgeWood);
-        Assertions.assertEquals(60, hotel.findCheapestHotel("11Sep2020", "12Sep2020"));
+        Assertions.assertEquals(60, hotel.findCheapestHotel("11Sep2020", "12Sep2020", "Regular"));
         Assertions.assertEquals(4, hotel.ratingOfHotels.get("BridgeWood"));
     }
 
@@ -53,7 +53,7 @@ public class HotelTest {
         hotel.addHotel(lakeWood);
         hotel.addHotel(bridgeWood);
         hotel.addHotel(ridgeWood);
-        Assertions.assertEquals(150, hotel.findBestRatedHotel("11Sep2020", "12Sep2020"));
+        Assertions.assertEquals(150, hotel.findBestRatedHotel("11Sep2020", "12Sep2020", "Regular"));
         Assertions.assertEquals(5, hotel.ratingOfHotels.get("RidgeWood"));
     }
 
@@ -62,7 +62,16 @@ public class HotelTest {
         hotel.addHotel(lakeWood);
         hotel.addHotel(bridgeWood);
         hotel.addHotel(ridgeWood);
-        Assertions.assertEquals(80,lakeWood.getRewardWeekDayRate());
+        Assertions.assertEquals(80, lakeWood.getRewardWeekDayRate());
+    }
+
+    @Test
+    void givenDateRangeRewardCustomersShouldBeAbleToFindCheapestHotel() {
+        hotel.addHotel(lakeWood);
+        hotel.addHotel(bridgeWood);
+        hotel.addHotel(ridgeWood);
+        Assertions.assertEquals(40, hotel.
+                findCheapestHotelRewardCustomer("11Sep2020", "12Sep2020", "Reward"));
     }
 }
 
