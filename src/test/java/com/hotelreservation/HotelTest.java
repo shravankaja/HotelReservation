@@ -5,13 +5,13 @@ import org.junit.jupiter.api.*;
 public class HotelTest {
     ReservationSystem reservationSystem = new ReservationSystem();
     Hotel hotel = new Hotel();
-    Hotel lakeWood = new Hotel("LakeWood", 110, 90, 3);
-    Hotel bridgeWood = new Hotel("BridgeWood", 150, 50, 4);
-    Hotel ridgeWood = new Hotel("RidgeWood", 220, 150, 5);
+    Hotel lakeWood = new Hotel("LakeWood", 110, 90, 3, 80, 80);
+    Hotel bridgeWood = new Hotel("BridgeWood", 150, 60, 4, 110, 50);
+    Hotel ridgeWood = new Hotel("RidgeWood", 220, 150, 5, 100, 40);
 
     @Test
     void givenHotelNameAndRateCheckIfHotelIsAddedToSystem() {
-        Hotel lakeWood = new Hotel("LakeWood", 110, 90, 3);
+        Hotel lakeWood = new Hotel("LakeWood", 110, 90, 3, 80, 80);
         hotel.addHotel(lakeWood);
         Assertions.assertTrue(hotel.arrayOfHotels.contains(lakeWood));
     }
@@ -21,7 +21,7 @@ public class HotelTest {
         hotel.addHotel(lakeWood);
         hotel.addHotel(bridgeWood);
         hotel.addHotel(ridgeWood);
-        Assertions.assertEquals(250, hotel.findCheapestHotel("12Sep2020", "15Sep2020"));
+        Assertions.assertEquals(270, hotel.findCheapestHotel("12Sep2020", "15Sep2020"));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class HotelTest {
         hotel.addHotel(lakeWood);
         hotel.addHotel(bridgeWood);
         hotel.addHotel(ridgeWood);
-        Assertions.assertEquals(50, hotel.findCheapestHotel("11Sep2020", "12Sep2020"));
+        Assertions.assertEquals(60, hotel.findCheapestHotel("11Sep2020", "12Sep2020"));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class HotelTest {
         hotel.addHotel(lakeWood);
         hotel.addHotel(bridgeWood);
         hotel.addHotel(ridgeWood);
-        Assertions.assertEquals(50, hotel.findCheapestHotel("11Sep2020", "12Sep2020"));
+        Assertions.assertEquals(60, hotel.findCheapestHotel("11Sep2020", "12Sep2020"));
         Assertions.assertEquals(4, hotel.ratingOfHotels.get("BridgeWood"));
     }
 
@@ -55,6 +55,14 @@ public class HotelTest {
         hotel.addHotel(ridgeWood);
         Assertions.assertEquals(150, hotel.findBestRatedHotel("11Sep2020", "12Sep2020"));
         Assertions.assertEquals(5, hotel.ratingOfHotels.get("RidgeWood"));
+    }
+
+    @Test
+    void givenRewardCustomersRatesShouldBeAssociatedWithEachHotel() {
+        hotel.addHotel(lakeWood);
+        hotel.addHotel(bridgeWood);
+        hotel.addHotel(ridgeWood);
+        Assertions.assertEquals(80,lakeWood.getRewardWeekDayRate());
     }
 }
 
