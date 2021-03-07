@@ -15,6 +15,7 @@ public class HotelTest {
         Assertions.assertTrue(hotel.arrayofHotels.contains(lakeWood));
     }
 
+
     @Test
     void givenDateRangeWeShouldGetHotelWithMinimumPrice() {
         Hotel lakeWood = new Hotel("LakeWood", 160);
@@ -23,7 +24,7 @@ public class HotelTest {
         hotel.addHotel(lakeWood);
         hotel.addHotel(bridgeWood);
         hotel.addHotel(ridgeWood);
-       Assertions.assertEquals(510,hotel.findCheapestHotel("12Sep2020","15Sep2020"));
+        Assertions.assertEquals(510, hotel.findCheapestHotel("12Sep2020", "15Sep2020"));
     }
 }
 
