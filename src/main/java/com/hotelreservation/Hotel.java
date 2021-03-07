@@ -17,6 +17,7 @@ public class Hotel {
     HashMap<String, String> monthsInYear = new HashMap<String, String>();
     Scanner sc = new Scanner(System.in);
     Map<String, Integer> ratingOfHotels = new HashMap<>();
+    Map<String, Integer> costOfHotelsRewardForCustomer = new HashMap<>();
 
     public Hotel(String name, int weekDayRate, int weekEndRate, int rating, int rewardWeekDayRate, int rewardWeekEndRate) {
         this.name = name;
@@ -42,7 +43,8 @@ public class Hotel {
     }
 
     // method to find cheap hotel for given date range
-    public int findCheapestHotel(String dateCheckIn, String dateCheckOut) {
+    public int findCheapestHotel(String dateCheckIn, String dateCheckOut, String customerType) {
+        int costReturn = 0;
         ratingOfHotels = arrayOfHotels.stream().collect(Collectors.toMap(e -> e.getHotelName(), e -> e.getRating()));
         String dayStart = dateCheckIn.substring(0, 2);
         int checkInDay = Integer.parseInt(dayStart);
@@ -52,12 +54,26 @@ public class Hotel {
         int numberOfWeekEnds = noOfWeekDaysAndWeekEnds(dateCheckIn, dateCheckOut, numberOfDays, checkInDay, checkOutDay);
         numberOfDays = numberOfDays - numberOfWeekEnds;
         int finalNumberOfDays = numberOfDays;
-        costOfHotels = arrayOfHotels.stream().collect(Collectors.toMap(e -> e.getHotelName(), e -> e.getWeekDayRate() * finalNumberOfDays + e.getWeekEndRate() * numberOfWeekEnds));
-        int cost = Collections.min(costOfHotels.values());
-        String hotel = costOfHotels.entrySet().stream().filter(e -> e.getValue().equals(cost)).map(Map.Entry::getKey)
-                .findFirst()
-                .orElse(null);
-        return cost;
+        if (customerType.equals("Regular")) {
+            costOfHotels = arrayOfHotels.stream().collect(Collectors.
+                    toMap(e -> e.getHotelName(), e -> e.getWeekDayRate() * finalNumberOfDays + e.getWeekEndRate() * numberOfWeekEnds));
+            int cost = Collections.min(costOfHotels.values());
+            String hotel = costOfHotels.entrySet().stream().filter(e -> e.getValue().equals(cost)).map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse(null);
+            costReturn = cost;
+        } else if (customerType.equals("Reward")) {
+            costOfHotelsRewardForCustomer = arrayOfHotels.stream().collect(Collectors
+                    .toMap(e -> e.getHotelName(), e -> e.getRewardWeekDayRate() * finalNumberOfDays + e.getRewardWeekEndRate() * numberOfWeekEnds));
+            int cost = Collections.min(costOfHotelsRewardForCustomer.values());
+            String hotel = costOfHotelsRewardForCustomer.entrySet().stream().filter(e -> e.getValue().equals(cost)).map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse(null);
+            costReturn = cost;
+        } else {
+            System.out.println("Please enter customer type as Regular or Reward");
+        }
+        return costReturn;
     }
 
     public static int getDayNumberOld(Date date) {
@@ -101,11 +117,12 @@ public class Hotel {
     }
 
     //Method to find best rated hotel
-    public int findBestRatedHotel(String dateCheckIn, String dateCheckout) {
-        findCheapestHotel(dateCheckIn, dateCheckout);
+    public int findBestRatedHotel(String dateCheckIn, String dateCheckout, String customerType) {
+        findCheapestHotel(dateCheckIn, dateCheckout, customerType);
         ratingOfHotels = arrayOfHotels.stream().collect(Collectors.toMap(e -> e.getHotelName(), e -> e.getRating()));
         if ((costOfHotels.get("LakeWood") < costOfHotels.get("BridgeWood") &&
-                ratingOfHotels.get("LakeWood") > ratingOfHotels.get("BridgeWood")) && (costOfHotels.get("LakeWood") < costOfHotels.get("RidgeWood") &&
+                ratingOfHotels.get("LakeWood") > ratingOfHotels.get("BridgeWood")) && (costOfHotels.get("LakeWood")
+                < costOfHotels.get("RidgeWood") &&
                 ratingOfHotels.get("LakeWood") > ratingOfHotels.get("RidgeWood"))) {
             return costOfHotels.get("LakeWood");
         }
@@ -127,5 +144,24 @@ public class Hotel {
         return rewardWeekEndRate;
     }
 
+    // Method to find Cheapest Hotel for Reward Customers
+    public int findCheapestHotelRewardCustomer(String dateCheckIn, String dateCheckOut, String customerType) {
+        int costReturn = 0;
+        try {
+            if (customerType.equals("Reward")) {
+                findCheapestHotel(dateCheckIn, dateCheckOut, customerType);
+                int cost = Collections.min(costOfHotelsRewardForCustomer.values());
+                String hotel = costOfHotelsRewardForCustomer.entrySet().stream().filter(e -> e.getValue().equals(cost)).map(Map.Entry::getKey)
+                        .findFirst()
+                        .orElse(null);
+                costReturn = cost;
+            } else {
+                System.out.println("Please enter Reward as customer type");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return costReturn;
+    }
 }
 
