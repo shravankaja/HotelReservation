@@ -1,31 +1,51 @@
 package com.hotelreservation;
+import java.util.*;
+import java.util.stream.*;
 
 public class Hotel {
-    public String hotelName;
-    public int rating;
-    public int weekDayRates;
-    public int weekEndRates;
+    public String name;
+    public int rate;
+    ArrayList<Hotel> arrayofHotels = new ArrayList<>();
+    Map<String, Integer> costOfHotels = new HashMap<>();
+    Scanner sc = new Scanner(System.in);
 
-    public Hotel(String hotelName, int rating, int weekDayRates, int weekEndRates) {
-        this.hotelName = hotelName;
-        this.rating = rating;
-        this.weekDayRates = weekDayRates;
-        this.weekEndRates = weekEndRates;
+    public Hotel(String name, int rate) {
+        this.name = name;
+        this.rate = rate;
+    }
+
+    public Hotel() {
+
+    }
+
+    // method to add hotel
+    public boolean addHotel(Hotel hotel) {
+        arrayofHotels.add(hotel);
+        return true;
+    }
+
+    public int findCheapestHotel(String dateCheckIn, String dateCheckOut) {
+        String dayStart = dateCheckIn.substring(0, 2);
+        int checkInDay = Integer.parseInt(dayStart);
+        String dayEnd = dateCheckOut.substring(0, 2);
+        int checkOutDay = Integer.parseInt(dayEnd);
+        int numberOfDays = checkOutDay - checkInDay;
+        costOfHotels = arrayofHotels.stream().collect(Collectors.toMap(e -> e.getHotelName(), e -> e.getRate() * numberOfDays));
+        String hotel = Collections.min(costOfHotels.keySet());
+        int cost = costOfHotels.get(hotel);
+        System.out.println("Minimm Hotel is " + hotel + " :" + cost);
+        return cost;
+    }
+
+    public void calculatePrice() {
+
     }
 
     public String getHotelName() {
-        return hotelName;
+        return name;
     }
 
-    public int getRating() {
-        return rating;
-    }
-
-    public int getWeekDayRates() {
-        return weekDayRates;
-    }
-
-    public int getWeekEndRates() {
-        return weekEndRates;
+    public int getRate() {
+        return rate;
     }
 }
