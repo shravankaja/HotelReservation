@@ -6,21 +6,25 @@ import java.util.*;
 import java.util.stream.*;
 
 public class Hotel {
-    public String name;
-    public int weekDayRate;
-    public int weekEndRate;
-    public int rating;
+    String name;
+    int weekDayRate;
+    int weekEndRate;
+    int rating;
+    int rewardWeekDayRate;
+    int rewardWeekEndRate;
     ArrayList<Hotel> arrayOfHotels = new ArrayList<>();
     Map<String, Integer> costOfHotels = new HashMap<>();
     HashMap<String, String> monthsInYear = new HashMap<String, String>();
     Scanner sc = new Scanner(System.in);
     Map<String, Integer> ratingOfHotels = new HashMap<>();
 
-    public Hotel(String name, int weekDayRate, int weekEndRate, int rating) {
+    public Hotel(String name, int weekDayRate, int weekEndRate, int rating, int rewardWeekDayRate, int rewardWeekEndRate) {
         this.name = name;
         this.weekDayRate = weekDayRate;
         this.weekEndRate = weekEndRate;
         this.rating = rating;
+        this.rewardWeekDayRate = rewardWeekDayRate;
+        this.rewardWeekEndRate = rewardWeekEndRate;
     }
 
     public Hotel() {
@@ -114,5 +118,14 @@ public class Hotel {
             return costOfHotels.get("RidgeWood");
         }
     }
+
+    public int getRewardWeekDayRate() {
+        return rewardWeekDayRate;
+    }
+
+    public int getRewardWeekEndRate() {
+        return rewardWeekEndRate;
+    }
+
 }
 
