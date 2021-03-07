@@ -76,7 +76,7 @@ public class HotelTest {
 
 
     @Test
-    void givenDateRangeWeShoudlObtainBestRatedHotelRewardCustomer() {
+    void givenDateRangeWeShoudlObtainBestRatedAndCheapestHotelRewardCustomer() {
         hotel.addHotel(lakeWood);
         hotel.addHotel(bridgeWood);
         hotel.addHotel(ridgeWood);
@@ -84,6 +84,17 @@ public class HotelTest {
                 findBestRatedAndCheapestHotelRewardCustomer("11Sep2020", "12Sep2020", "Reward"));
         Assertions.assertEquals(5, hotel.ratingOfHotels.get("RidgeWood"));
     }
+
+    @Test
+    void givenDateRangeWeShouldObtainBestRatedAndCheapestHotelForRegular() {
+        hotel.addHotel(lakeWood);
+        hotel.addHotel(bridgeWood);
+        hotel.addHotel(ridgeWood);
+        Assertions.assertEquals(60, hotel.
+                findBestAndCheapestHotelRegular("11Sep2020", "12Sep2020", "Regular"));
+        Assertions.assertEquals(4, hotel.ratingOfHotels.get("BridgeWood"));
+    }
+
 }
 
 
